@@ -78,7 +78,14 @@ app.get("/", function(req, res) {
       });
       res.redirect("/");
     });
+ });
 
+ app.post("/submit", function(req, res) {
+   var id = req.body.id;
+   var note = req.body.note;
+  console.log(id);
+  console.log(note);
+  //  db.comments.insert({ id: id, note: note});
  });
 
 //   EXPRESS: APP is Listening

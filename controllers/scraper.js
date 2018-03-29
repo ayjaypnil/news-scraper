@@ -28,7 +28,7 @@ function scraper(){
             {
                 title: [title],
                 preview: [preview],
-                link: [link]
+                link: [link], 
             }
           )
 

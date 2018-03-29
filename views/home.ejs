@@ -8,6 +8,9 @@
         
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
         <!-- Compiled and minified JavaScript -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
@@ -38,8 +41,8 @@
                         <div class="card-content white-text">
                             <span class="card-title title"><strong><%= data[i].title %></strong></span>
                             <p><%= data[i].preview %></p>
-                                <a class="btn-floating halfway-fab waves-effect waves-light red">
-                                    <i class="material-icons addComment">add</i>
+                                <a class="btn-floating halfway-fab waves-effect waves-light red modal-trigger" href="#modal1">
+                                    <i class="material-icons addComment" id= <%= data[i]._id %>> add</i>
                                 </a>
                         </div>
                         <div class="card-action">
@@ -52,14 +55,57 @@
         <% } %>
         </div>
 
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Add A Comment to: <span class="articleID"> </span></h4>
+            <input type="text" name="commentText" class="commentText">  
+            <a href="#!" for="commentText" class="modal-action modal-close waves-effect waves-green btn-flat submitComment">Add</a> 
+    </div>
+</div>
        
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
+
 <script type="text/javascript">
 
     $(".addComment").on("click", function(){
-        alert($(".title").text());
+        // var title = $(this).data('id');
+        // var preview = $(this).data('preview');
+
+        var id = $(this).attr('id')
+        // alert($(this).text());
+        $(".articleID").append(id);
+        console.log(id);
     });
+
+    $(".submitComment").on("click", function(){
+        // console.log($("").text());
+        // console.log($("").val());
+
+        event.preventDefault();
+        var newComment = {
+            id: $(".articleID").text().trim(),
+            note: $(".commentText").val().trim()
+        };
+
+        console.log(newComment);
+              $.post("/submit", newComment)
+                    .done(function (data) {
+                   
+                        console.log(data);         
+                });
+    });
+
+
+
+
+
+$(document).ready(function(){
+    $('.modal').modal();
+  });
+
+
+       
 
 </script>
 
