@@ -44,10 +44,41 @@ app.get("/", function(req, res) {
     });
  });
 
- app.get("/scraper", function(req, res) {
-    scraper.scraper()
+ app.get("/scrape", function(req, res) {
+
+  var results = [];
+  var articleScraped;
+  // CHEERIO: SCRAPING
+    request("http://www.insidethehall.com/", function(error, response, html) {
+      var $ = cheerio.load(html);
+      $("div.post.small").each(function(i, element) {
+        var title = $(element).find("h2 > a").text().trim();
+        var preview = $(element).find("p > a.excerpt").text().trim();
+        var link = $(element).find("p > a").attr("href");
     
-   
+        results.push({title: title, preview: preview, link: link})
+
+        articleScraped = new article(
+            {
+                title: [title],
+                preview: [preview],
+                link: [link]
+            }
+          )
+
+        			articleScraped.save(function(error, doc){
+				  		if (error){
+                console.log("error: ", error);
+                
+				  		}else{
+				  			console.log("new article scraped:", doc);
+              }
+            });
+                  console.log("Scraping.....");
+      });
+      res.redirect("/");
+    });
+
  });
 
 //   EXPRESS: APP is Listening

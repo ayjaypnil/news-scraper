@@ -24,7 +24,8 @@ var articleSchema = new Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  created: Date
 });
 
 // model creation 

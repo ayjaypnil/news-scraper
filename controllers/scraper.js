@@ -34,15 +34,14 @@ function scraper(){
 
         			articleScraped.save(function(error, doc){
 				  		if (error){
-				  			console.log("error: ", error);
+                console.log("error: ", error);
+                
 				  		}else{
 				  			console.log("new article scraped:", doc);
               }
-                    });
-
-
+            });
       });
-      console.log(articleScraped);
+      console.log("Scraping.....");
     });
 };
 
