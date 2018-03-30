@@ -24,8 +24,7 @@ var articleSchema = new Schema({
     type: String,
     required: true,
     unique: true
-  },
-  notes:[]
+  }
 });
 
 // model creation 

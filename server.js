@@ -31,7 +31,7 @@ var db = require("./config/connection.js");
 var article = require("./models/article");
 var notes = require("./models/notes");
 // REQUIRE THE SCRAPER
-var scraper = require("./controllers/scraper.js");
+// var scraper = require("./controllers/scraper.js");
 
 // EXPRESS: Get Route
 app.get("/", function(req, res) {
@@ -77,7 +77,7 @@ app.get("/", function(req, res) {
             });
                   console.log("Scraping.....");
       });
-      res.redirect("/");
+      res.redirect("/scraping");
     });
  });
 
@@ -92,15 +92,17 @@ app.get("/", function(req, res) {
 
  	notes.save(function(error, doc){
        notes.update({ $push: { artid: artid, notes: note } });
-   })
+   });
    
+ });
+
+ app.get("/scraping", function(req, res) {
+       res.render("scraping.ejs"); 
  });
 
  app.get("/:id", function(req, res) {
    var id = req.params.id;
- 	  notes.find({ 'artid': id }, "notes", function(error, data) {
-      if (error) console.log("error getting notes", error);
-
+ 	  notes.find({ "artid" : id }, "notes", function(error, data) {
       res.render("comments.ejs", { data: data });
     });
  });
