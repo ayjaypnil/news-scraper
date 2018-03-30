@@ -29,6 +29,7 @@ app.use(bodyParser.json());
 var db = require("./config/connection.js");
 // REQUIRE THE SCHEMA
 var article = require("./models/article");
+var notes = require("./models/notes");
 // REQUIRE THE SCRAPER
 var scraper = require("./controllers/scraper.js");
 
@@ -81,14 +82,32 @@ app.get("/", function(req, res) {
  });
 
  app.post("/submit", function(req, res) {
-   var id = req.body.id;
+   var artid = req.body.id;
    var note = req.body.note;
-  console.log(id);
-  console.log(note);
-  //  db.comments.insert({ id: id, note: note});
+
+    notes = new notes({
+      notes: [note],
+      artid: [artid]
+    });
+
+ 	notes.save(function(error, doc){
+       notes.update({ $push: { artid: artid, notes: note } });
+   })
+   
+ });
+
+ app.get("/:id", function(req, res) {
+   var id = req.params.id;
+ 	  notes.find({ 'artid': id }, "notes", function(error, data) {
+      if (error) console.log("error getting notes", error);
+
+      res.render("comments.ejs", { data: data });
+    });
  });
 
 //   EXPRESS: APP is Listening
   app.listen(port, function() {
     console.log("Scraping App is listening on PORT: " + port);
   });
+
+  

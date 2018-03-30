@@ -25,7 +25,7 @@ var articleSchema = new Schema({
     required: true,
     unique: true
   },
-  created: Date
+  notes:[]
 });
 
 // model creation 
