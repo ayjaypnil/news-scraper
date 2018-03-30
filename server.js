@@ -84,14 +84,18 @@ app.get("/", function(req, res) {
  app.post("/submit", function(req, res) {
    var artid = req.body.id;
    var note = req.body.note;
-
-    notes = new notes({
+     console.log("=============================");
+     console.log("post route");
+     console.log("=============================");
+    var notes = new notes({
       notes: [note],
       artid: [artid]
     });
 
  	notes.save(function(error, doc){
-       notes.update({ $push: { artid: artid, notes: note } });
+      console.log("============");
+      console.log("console.log", doc);
+      notes.update({ $push: { artid: artid, notes: note } });
    });
    
  });
@@ -102,8 +106,13 @@ app.get("/", function(req, res) {
 
  app.get("/:id", function(req, res) {
    var id = req.params.id;
- 	  notes.find({ "artid" : id }, "notes", function(error, data) {
-      res.render("comments.ejs", { data: data });
+  //   console.log("=============================");
+   console.log("notes", notes);
+   console.log("article", article);
+  //  console.log("=============================");
+ 	  notes.find({ "artid" : id }, function(error, data) {
+       console.log("This is the", data)
+      res.render("comments.ejs", { data: data })
     });
  });
 
